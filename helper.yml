@@ -1,0 +1,4 @@
+name: DataView Pagination Controller
+behaviors:
+  - filename: dataview_pagination.livecodescript
+dependencies: DataView
