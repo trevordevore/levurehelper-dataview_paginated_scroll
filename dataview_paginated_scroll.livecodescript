@@ -174,16 +174,19 @@ private command _AddCurrentPageOfDataToQueue pRowWithMissingId
   put (pRowWithMissingId + (sLocalsA["rows per page"]-1)) \
         div sLocalsA["rows per page"] into tPageToLoad
 
-  # Add tPageToLoad to front of pages to load.
-  put itemoffset(tPageToLoad, sLocalsA["page queue"]) into tItemNo
-  if tItemNo is not empty then
-    delete item tItemNo of sLocalsA["page queue"]
-  end if
+  # Ignore the page if it is currently being waited on
+  if tPageToLoad is not sLocalsA["waiting on page"] then
+    # Add tPageToLoad to front of pages to load.
+    put itemoffset(tPageToLoad, sLocalsA["page queue"]) into tItemNo
+    if tItemNo > 0 then
+      delete item tItemNo of sLocalsA["page queue"]
+    end if
 
-  if sLocalsA["page queue"] is not empty then
-    put tPageToLoad & "," before sLocalsA["page queue"]
-  else
-    put tPageToLoad into sLocalsA["page queue"]
+    if sLocalsA["page queue"] is not empty then
+      put tPageToLoad & "," before sLocalsA["page queue"]
+    else
+      put tPageToLoad into sLocalsA["page queue"]
+    end if
   end if
 
   return empty
