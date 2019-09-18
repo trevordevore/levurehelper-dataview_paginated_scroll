@@ -79,7 +79,7 @@ Summary: Returns the stored number of rows.
 Returns: Integer
 */
 function NumberOfRows
-  return 0 --max(0, sLocalsA["number of rows"])
+  return max(0, sLocalsA["number of rows"])
 end NumberOfRows
 
 
