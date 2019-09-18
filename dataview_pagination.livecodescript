@@ -17,13 +17,17 @@ as well as the `rows per page` property to store this information.
 Returns: nothing
 */
 setProp viewProp[pProp] pValue
-  if pProp is "number of rows" then
-    put pValue into sLocalsA["number of rows"]
-  else if pProp is "rows per page" then
-    put pValue into sLocalsA["rows per page"]
-  else
-    pass viewProp
-  end if
+  switch pProp
+    case "number of rows"
+    case "number of pages"
+    case "rows per page"
+      put pValue into sLocalsA[pProp]
+      break
+
+    default
+      pass viewProp
+      break
+  end switch
 end viewProp
 
 
@@ -34,12 +38,9 @@ Returns: nothing
 */
 getProp viewProp[pProp]
   switch pProp
-    case "number of pages"
-      return ceiling(sLocalsA["number of rows"] / sLocalsA["rows per page"])
-      break
-
-    case "number of rows"
     case "rows per page"
+    case "number of rows"
+    case "number of pages"
       return sLocalsA[pProp]
 
     default
@@ -78,8 +79,34 @@ Summary: Returns the stored number of rows.
 Returns: Integer
 */
 function NumberOfRows
-  return sLocalsA["number of rows"]
+  return 0 --max(0, sLocalsA["number of rows"])
 end NumberOfRows
+
+
+/**
+Summary: Returns the row that a page starts on.
+
+Parameters:
+pPage: The page number.
+
+Returns: Integer
+*/
+getProp dvFirstPageRow[pPage]
+  return ((pPage-1) * sLocalsA["rows per page"]) + 1
+end dvFirstPageRow
+
+
+/**
+Summary: Returns the row that a page ends on.
+
+Parameters:
+pPage: The page number.
+
+Returns: Integer
+*/
+getProp dvLastPageRow[pPage]
+  return min(pPage * sLocalsA["rows per page"], sLocalsA["number of rows"])
+end dvLastPageRow
 
 
 /**
@@ -88,6 +115,9 @@ Summary: Adds data to a page in the DataView's data source.
 Description:
 This will be called after `LoadDataForPage` is processed by the data provider
 and there are records to insert into the page.
+
+If `pPage` is the page that triggered `LoadDataForPage` then the next
+page in the queue will be loaded.
 
 Returns: nothing
 */
@@ -99,7 +129,15 @@ setProp dvDataForPage[pPage] pDataA
   repeat with i = 1 to the number of elements of pDataA
     add 1 to tRow
     set the dvRowData[tRow] of me to pDataA[i]
+    set the dvRowIsDirty[tRow] of me to true
   end repeat
+
+  RenderVisibleRows
+
+  if pPage is sLocalsA["waiting on page"] then
+    put empty into sLocalsA["waiting on page"]
+    _RequestNextPageInQueue
+  end if
 end dvDataForPage
 
 
