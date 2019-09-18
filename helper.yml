@@ -1,4 +1,4 @@
-name: DataView Pagination Controller
+name: DataView Paginated Scroll
 behaviors:
-  - filename: dataview_pagination.livecodescript
+  - filename: dataview_paginated_scroll.livecodescript
 dependencies: DataView
