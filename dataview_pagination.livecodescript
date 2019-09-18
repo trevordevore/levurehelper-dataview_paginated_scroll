@@ -1,4 +1,4 @@
-script "DataView Pagination Controller Behavior" with behavior "DataView Array Controller Behavior"
+script "DataView Paginated Infinite Scroll Behavior" with behavior "DataView Array Controller Behavior"
 
 local sLocalsA
 
