@@ -1,4 +1,4 @@
-script "DataView Paginated Infinite Scroll Behavior" with behavior "DataView Array Controller Behavior"
+script "DataView Paginated Scroll Behavior" with behavior "DataView Array Controller Behavior"
 
 local sLocalsA
 
@@ -59,7 +59,7 @@ rDataA: See DataView docs.
 rTemplateStyle: See DataView docs.
 
 Description:
-This hanlder inspects `rData` to see if the `id` property is empty. If it
+This handler inspects `rData` to see if the `id` property is empty. If it
 is then the page of results that `pRow` is associated with is requested by
 sending the `LoadDataForPage` message.
 
