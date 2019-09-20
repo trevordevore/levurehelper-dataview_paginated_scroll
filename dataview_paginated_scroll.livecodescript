@@ -49,6 +49,16 @@ end viewProp
 
 
 /**
+Summary: When resetting the view clear out `rows per page` and `number of rows`.
+
+Returns: nothing
+*/
+after ResetView
+  put empty into sLocalsA
+end ResetView
+
+
+/**
 Summary: Looks for pages that need to be loaded.
 
 Parameters:
