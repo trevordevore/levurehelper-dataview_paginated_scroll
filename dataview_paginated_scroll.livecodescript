@@ -91,9 +91,9 @@ pPage: The page number.
 
 Returns: Integer
 */
-getProp dvFirstPageRow[pPage]
+getProp dvFirstRowOfPage[pPage]
   return ((pPage-1) * sLocalsA["rows per page"]) + 1
-end dvFirstPageRow
+end dvFirstRowOfPage
 
 
 /**
@@ -104,9 +104,9 @@ pPage: The page number.
 
 Returns: Integer
 */
-getProp dvLastPageRow[pPage]
+getProp dvLastRowOfPage[pPage]
   return min(pPage * sLocalsA["rows per page"], sLocalsA["number of rows"])
-end dvLastPageRow
+end dvLastRowOfPage
 
 
 /**
