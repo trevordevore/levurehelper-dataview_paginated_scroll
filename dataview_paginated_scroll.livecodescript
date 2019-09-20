@@ -19,7 +19,6 @@ Returns: nothing
 setProp viewProp[pProp] pValue
   switch pProp
     case "number of rows"
-    case "number of pages"
     case "rows per page"
       put pValue into sLocalsA[pProp]
       break
@@ -40,7 +39,6 @@ getProp viewProp[pProp]
   switch pProp
     case "rows per page"
     case "number of rows"
-    case "number of pages"
       return sLocalsA[pProp]
 
     default
