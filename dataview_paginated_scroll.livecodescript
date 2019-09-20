@@ -57,14 +57,15 @@ rDataA: See DataView docs.
 rTemplateStyle: See DataView docs.
 
 Description:
-This handler inspects `rData` to see if the `id` property is empty. If it
-is then the page of results that `pRow` is associated with is requested by
-sending the `LoadDataForPage` message.
+This handler inspects `rData` to see if the magic key property is empty. That magic
+key property is the property assigned to the `viewProp["magic key"]` custom property
+of the DataView. If it is empty then the page of results that `pRow` is associated
+with is requested by sending the `LoadDataForPage` message.
 
 Returns: nothing
 */
 after DataForRow pRow, @rDataA, @rTemplateStyle
-  if rDataA["id"] is empty then
+  if rDataA[the viewProp["magic key"] of me] is empty then
     _AddCurrentPageOfDataToQueue pRow
     _StartRequestingPages
   end if
