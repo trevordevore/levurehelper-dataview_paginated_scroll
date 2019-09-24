@@ -1,6 +1,7 @@
 script "DataView Paginated Scroll Behavior" with behavior "DataView Array Controller Behavior"
 
 local sLocalsA
+local sViewsRequiresRendering
 
 /**
 Summary: Stores certain properties required for this behavior.
@@ -19,6 +20,13 @@ Returns: nothing
 setProp viewProp[pProp] pValue
   switch pProp
     case "number of rows"
+      put pValue into sLocalsA[pProp]
+
+      # View needs to be fully rendered after setting `number of rows`
+      # as the content height will need updating.
+      put true into sViewsRequiresRendering
+      break
+
     case "rows per page"
       put pValue into sLocalsA[pProp]
       break
@@ -46,6 +54,26 @@ getProp viewProp[pProp]
       break
   end switch
 end viewProp
+
+
+/**
+Summary: Turn off `sViewsRequiresRendering` flag when called.
+
+Returns: nothing
+*/
+after RenderView
+  put false into sViewsRequiresRendering
+end RenderView
+
+
+/**
+Summary: Turn off `sViewsRequiresRendering` flag when called.
+
+Returns: nothing
+*/
+after RefreshViewRows
+  put false into sViewsRequiresRendering
+end RefreshViewRows
 
 
 /**
@@ -141,7 +169,11 @@ setProp dvDataForPage[pPage] pDataA
     set the dvRowIsDirty[tRow] of me to true
   end repeat
 
-  RenderVisibleRows
+  if sViewsRequiresRendering then
+    RenderView
+  else
+    RenderVisibleRows
+  end if
 
   if pPage is sLocalsA["waiting on page"] then
     put empty into sLocalsA["waiting on page"]
