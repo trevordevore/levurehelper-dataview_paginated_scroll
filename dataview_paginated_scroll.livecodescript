@@ -39,7 +39,7 @@ getProp viewProp[pProp]
   switch pProp
     case "rows per page"
     case "number of rows"
-      return sLocalsA[pProp]
+      return max(0, sLocalsA[pProp])
 
     default
       pass viewProp
