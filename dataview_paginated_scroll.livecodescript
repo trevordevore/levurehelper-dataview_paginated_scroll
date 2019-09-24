@@ -113,6 +113,10 @@ end DataForRow
 /**
 Summary: Returns the stored number of rows.
 
+Description:
+While this function is not used explicitly, it is provided in cases the
+developer tries to call this function in their own code.
+
 Returns: Integer
 */
 function NumberOfRows
