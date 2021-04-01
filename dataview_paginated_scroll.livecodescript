@@ -151,6 +151,21 @@ end dvLastRowOfPage
 
 
 /**
+Summary: Update the "rows per page" and then pass to parent behavior.
+
+Returns: nothing
+*/
+setProp dvData pDataA
+  local tRowCount
+
+  put the number of elements of pDataA into tRowCount
+  put tRowCount into sLocalsA["number of rows"]
+
+  pass dvData
+end dvData
+
+
+/**
 Summary: Adds data to a page in the DataView's data source.
 
 Description:
@@ -215,6 +230,10 @@ Returns: nothing
 */
 private command _AddCurrentPageOfDataToQueue pRowWithMissingId
   local tPageToLoad, tItemNo
+
+  if sLocalsA["rows per page"] < 1 then
+    return empty
+  end if
 
   set the wholematches to true
 
