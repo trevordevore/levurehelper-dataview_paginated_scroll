@@ -165,6 +165,8 @@ Returns: nothing
 setProp dvDataForPage[pPage] pDataA
   local tRow, i
 
+  _ValidateMagicKey
+
   put ((pPage-1) * sLocalsA["rows per page"]) into tRow
 
   repeat with i = 1 to the number of elements of pDataA
@@ -256,3 +258,13 @@ private command _RequestNextPageInQueue
 
   return empty
 end _RequestNextPageInQueue
+
+
+/**
+Summary: Throws an error if the "magic key" prop isn't set.
+*/
+private command _ValidateMagicKey
+  if the viewProp["magic key"] of me is empty then
+    throw "DataView Paginated Error: viewProp[" & quote & "magic key" & quote & "] is not defined."
+  end if
+end _ValidateMagicKey
